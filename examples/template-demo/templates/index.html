@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        {{include "header.html"}}
+
+        <h1>{{page_heading}}</h1>
+
+        <p>Welcome, <span class="highlight">{{username}}</span>! This page demonstrates the templating capabilities of the Beaker web framework.</p>
+
+        <h2>Simple Variable Substitution</h2>
+        <p>Your favourite colour is: <span class="highlight">{{favourite_colour}}</span></p>
+        <p>The current year is: <span class="highlight">{{current_year}}</span></p>
+        <p>This is a safe string: <span class="code-block">{{safe_html|safe}}</span></p>
+        <p>This is an unsafe string (will be escaped): <span class="code-block">{{unsafe_html}}</span></p>
+
+        <h2>List of Features (String Array)</h2>
+        <p>Here are some features:</p>
+        <ul>
+            {{for feature in features}}
+                <li>{{feature}}</li>
+            {{endfor}}
+        </ul>
+
+        <h2>User Data (Array of Arrays)</h2>
+        <p>Here's some user information:</p>
+        <ul>
+            {{for user_row in users}}
+                <li>
+                    Name: <span class="highlight">{{user_row[0]}}</span>,
+                    Age: <span class="highlight">{{user_row[1]}}</span>,
+                    City: <span class="highlight">{{user_row[2]}}</span>
+                </li>
+            {{endfor}}
+        </ul>
+
+        <div class="footer">
+            <p>Rendered at: {{timestamp}}</p>
+        </div>
+    </div>
+</body>
+</html>

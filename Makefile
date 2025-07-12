@@ -1,12 +1,14 @@
 CC = gcc
 CFLAGS = -Wall -fPIC -I. -Isrc
 LDFLAGS = -shared
-OBJ_DIR = obj
+BUILD_DIR ?= build
+OBJ_DIR = $(BUILD_DIR)/obj
+INSTALL_PREFIX ?= /usr/local
 
 SRCS = $(wildcard src/*.c)
 OBJS = $(patsubst src/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 
-LIB = libbeaker.so
+LIB = $(BUILD_DIR)/libbeaker.so
 HEADER = beaker.h
 
 .PHONY: all clean install uninstall
@@ -31,17 +33,17 @@ clean:
 	@echo "Clean complete."
 
 install: all
-	@echo "Installing $(LIB) to /usr/local/lib"
-	@cp $(LIB) /usr/local/lib/
+	@echo "Installing $(LIB) to $(INSTALL_PREFIX)/lib"
+	@cp $(LIB) $(INSTALL_PREFIX)/lib/
 	@ldconfig
-	@echo "Installing $(HEADER) to /usr/local/include"
-	@cp $(HEADER) /usr/local/include
+	@echo "Installing $(HEADER) to $(INSTALL_PREFIX)/include"
+	@cp $(HEADER) $(INSTALL_PREFIX)/include
 	@echo "Installation complete."
 
 uninstall:
-	@echo "Uninstalling $(LIB) from /usr/local/lib..."
-	@rm -f /usr/local/lib/$(LIB)
+	@echo "Uninstalling $(LIB) from $(INSTALL_PREFIX)/lib..."
+	@rm -f $(INSTALL_PREFIX)/lib/$(LIB)
 	@ldconfig
-	@echo "Removing $(HEADER) from /usr/local/include"
-	@rm -f /usr/local/include/$(HEADER)
+	@echo "Removing $(HEADER) from $(INSTALL_PREFIX)/include"
+	@rm -f $(INSTALL_PREFIX)/include/$(HEADER)
 	@echo "Uninstallation complete."

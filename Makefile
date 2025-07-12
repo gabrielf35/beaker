@@ -22,7 +22,7 @@ $(OBJ_DIR):
 
 $(LIB).a: $(OBJS)
 	@echo "Linking shared library $@..."
-	$(ar) rcs $@ $^
+	$(AR) rcs $@ $^
 	@echo "Successfully built $@"
 
 $(LIB).so: $(OBJS)

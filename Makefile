@@ -1,4 +1,5 @@
 CC = gcc
+AR = ar
 CFLAGS = -Wall -fPIC -I. -Isrc
 LDFLAGS = -shared
 BUILD_DIR ?= build
@@ -8,17 +9,23 @@ INSTALL_PREFIX ?= /usr/local
 SRCS = $(wildcard src/*.c)
 OBJS = $(patsubst src/%.c,$(OBJ_DIR)/%.o,$(SRCS))
 
-LIB = $(BUILD_DIR)/libbeaker.so
+LIB = $(BUILD_DIR)/libbeaker
 HEADER = beaker.h
 
 .PHONY: all clean install uninstall
 
-all: $(LIB)
+all: $(LIB).so $(LIB).a
+
 
 $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
 
-$(LIB): $(OBJS)
+$(LIB).a: $(OBJS)
+	@echo "Linking shared library $@..."
+	$(ar) rcs $@ $^
+	@echo "Successfully built $@"
+
+$(LIB).so: $(OBJS)
 	@echo "Linking shared library $@..."
 	$(CC) $(LDFLAGS) $(OBJS) -o $@ -lm
 	@echo "Successfully built $@"
